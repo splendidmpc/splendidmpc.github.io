@@ -1,68 +1,56 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
+---
+layout: default
+title: 首页
+---
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Rocky博客-GitHub.io by splendidmpc</title>
-  </head>
-
-  <body>
-    <a id="forkme_banner" href="https://github.com/splendidmpc">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Rocky博客-GitHub.io</h1>
-            <h2>Rocky博客</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <div id="no-downloads">
-        <span class="inner">
-        </span>
+<ul class="post-list">
+    {% for post in paginator.posts %}
+    <li>
+      <div class="post-title">
+        <a href="{{site.baseurl}}{{post.url}}"> {{post.title}}</a> </br>
       </div>
 
+      <div class="post-info">
+        <ol>
+          <li class="post-time">{{ post.date | date: "%F" }}</li> 
+          <li class="post-category"> 
+           {{ post.categories | join: '&nbsp&nbsp' }}
+          </li>
+        </ol>
+      </div>
 
-      <span class="banner-fix"></span>
+      <div class="post-preview">
+        {{ post.excerpt }} 
+        <a href="{{site.baseurl}}{{post.url}}"> Read More ... </a> </br>
+      </div>
 
+    </li>
+    {% endfor %}
+</ul>
 
-      <section id="main_content">
-        <h1>
-<a id="splendidmpcgithubio" class="anchor" href="#splendidmpcgithubio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>splendidmpc.github.io</h1>
-      </section>
+<!-- Pagination links -->
+{% if paginator.total_pages > 1 %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; Prev</a>
+  {% else %}
+    <span>&laquo; Prev</span>
+  {% endif %}
 
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>Projects by <a href="https://github.com/splendidmpc">splendidmpc</a> can be found on <a href="https://github.com/splendidmpc">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
+  {% for page in (1..paginator.total_pages) %}
+    {% if page == paginator.page %}
+      {{ page }}
+    {% elsif page == 1 %}
+      <a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+    {% else %}
+      <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+    {% endif %}
+  {% endfor %}
 
-    </div>
-
-    
-  </body>
-</html>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next &raquo;</a>
+  {% else %}
+    <span>Next &raquo;</span>
+  {% endif %}
+</div>
+{% endif %}
